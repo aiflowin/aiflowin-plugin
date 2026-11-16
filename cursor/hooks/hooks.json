@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "hooks": {
+    "postToolUse": [
+      {
+        "command": "python3 \"${CURSOR_PLUGIN_ROOT}/errlog.py\" hook --agent cursor",
+        "matcher": "Shell",
+        "timeout": 15
+      }
+    ],
+    "postToolUseFailure": [
+      {
+        "command": "python3 \"${CURSOR_PLUGIN_ROOT}/errlog.py\" hook --agent cursor",
+        "matcher": "Shell",
+        "timeout": 15
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "python3 \"${CURSOR_PLUGIN_ROOT}/errlog.py\" hook --agent cursor",
+        "timeout": 15
+      }
+    ],
+    "stop": [
+      {
+        "command": "python3 \"${CURSOR_PLUGIN_ROOT}/errlog.py\" hook --agent cursor",
+        "timeout": 15,
+        "loop_limit": 1
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": "python3 \"${CURSOR_PLUGIN_ROOT}/errlog.py\" hook --agent cursor",
+        "timeout": 15
+      }
+    ]
+  }
+}

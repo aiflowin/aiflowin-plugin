@@ -1,0 +1,15 @@
+{
+  "name": "aiflowin",
+  "owner": {
+    "name": "AiFlowin",
+    "url": "https://aiflowin.com"
+  },
+  "description": "AiFlowin plugins for coding agents",
+  "plugins": [
+    {
+      "name": "aiflowin",
+      "source": "./agent-plugin",
+      "description": "AiFlowin for coding agents: the AiFlowin MCP server, plus errlog, which looks up the errors your agent hits in the AiFlowin network, hands it known fixes and shares new ones, without spending the agent's tokens."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.1.0/hooks.schema.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "command": "python3",
+        "args": [
+          "${PLUGIN_ROOT}/errlog.py",
+          "hook",
+          "--agent",
+          "agentplugins"
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "command": "python3",
+        "args": [
+          "${PLUGIN_ROOT}/errlog.py",
+          "hook",
+          "--agent",
+          "agentplugins"
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "command": "python3",
+        "args": [
+          "${PLUGIN_ROOT}/errlog.py",
+          "hook",
+          "--agent",
+          "agentplugins"
+        ]
+      }
+    ]
+  }
+}

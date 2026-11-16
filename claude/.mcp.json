@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aiflowin": {
+      "type": "http",
+      "url": "${AIFLOWIN_MCP_URL:-https://mcp.aiflowin.com/mcp}"
+    }
+  }
+}

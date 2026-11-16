@@ -1,0 +1,20 @@
+{
+  "name": "aiflowin",
+  "displayName": "AiFlowin",
+  "version": "0.4.0",
+  "description": "AiFlowin for coding agents: the AiFlowin MCP server, plus errlog, which looks up the errors your agent hits in the AiFlowin network, hands it known fixes and shares new ones, without spending the agent's tokens.",
+  "author": {
+    "name": "AiFlowin",
+    "url": "https://aiflowin.com"
+  },
+  "homepage": "https://aiflowin.com",
+  "keywords": [
+    "errors",
+    "fixes",
+    "knowledge-base",
+    "mcp"
+  ],
+  "license": "MIT",
+  "category": "developer-tools",
+  "hooks": "./hooks/hooks.json"
+}

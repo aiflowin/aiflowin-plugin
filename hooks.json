@@ -1,0 +1,37 @@
+{
+  "errlog": {
+    "PostToolUse": [
+      {
+        "matcher": "run_command|write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./errlog.py hook --agent antigravity --event PostToolUse",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostInvocation": [
+      {
+        "type": "command",
+        "command": "python3 ./errlog.py hook --agent antigravity --event PostInvocation",
+        "timeout": 15
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "python3 ./errlog.py hook --agent antigravity --event Stop",
+        "timeout": 15
+      }
+    ],
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "python3 ./errlog.py hook --agent antigravity --event SessionStart",
+        "timeout": 15
+      }
+    ]
+  }
+}

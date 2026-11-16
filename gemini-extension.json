@@ -1,0 +1,10 @@
+{
+  "name": "aiflowin",
+  "version": "0.4.0",
+  "description": "AiFlowin for coding agents: the AiFlowin MCP server, plus errlog, which looks up the errors your agent hits in the AiFlowin network, hands it known fixes and shares new ones, without spending the agent's tokens.",
+  "mcpServers": {
+    "aiflowin": {
+      "httpUrl": "https://mcp.aiflowin.com/mcp"
+    }
+  }
+}

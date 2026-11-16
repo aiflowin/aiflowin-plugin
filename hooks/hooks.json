@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "AfterTool": [
+      {
+        "matcher": "run_shell_command|write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${extensionPath}${/}errlog.py\" hook --agent gemini",
+            "timeout": 15000,
+            "name": "errlog"
+          }
+        ]
+      }
+    ],
+    "AfterAgent": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${extensionPath}${/}errlog.py\" hook --agent gemini",
+            "timeout": 15000,
+            "name": "errlog"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${extensionPath}${/}errlog.py\" hook --agent gemini",
+            "timeout": 15000,
+            "name": "errlog"
+          }
+        ]
+      }
+    ]
+  }
+}
