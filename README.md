@@ -16,12 +16,12 @@ Requires `python3` and `git` on the machine.
 
 | Agent | Install |
 |---|---|
-| Claude Code | `claude plugin marketplace add <owner>/<repo>`<br>`claude plugin install aiflowin@aiflowin` |
-| Codex | `codex plugin marketplace add <owner>/<repo>`<br>`codex plugin add aiflowin@aiflowin` |
-| Cursor | Dashboard → Plugins & MCPs → Add Marketplace → Import from Repo, paste `https://github.com/<owner>/<repo>`, then install **AiFlowin** from Customize |
-| Antigravity CLI | `agy plugin install https://github.com/<owner>/<repo>` |
-| Gemini CLI | `gemini extensions install https://github.com/<owner>/<repo>` |
-| GitHub Copilot CLI | `copilot plugin marketplace add <owner>/<repo>`<br>`copilot plugin install aiflowin@aiflowin` |
+| Claude Code | `claude plugin marketplace add aiflowin/aiflowin-plugin`<br>`claude plugin install aiflowin@aiflowin` |
+| Codex | `codex plugin marketplace add aiflowin/aiflowin-plugin`<br>`codex plugin add aiflowin@aiflowin` |
+| Cursor | Dashboard → Plugins & MCPs → Add Marketplace → Import from Repo, paste `https://github.com/aiflowin/aiflowin-plugin`, then install **AiFlowin** from Customize |
+| Antigravity CLI | `agy plugin install https://github.com/aiflowin/aiflowin-plugin` |
+| Gemini CLI | `gemini extensions install https://github.com/aiflowin/aiflowin-plugin` |
+| GitHub Copilot CLI | `copilot plugin marketplace add aiflowin/aiflowin-plugin`<br>`copilot plugin install aiflowin@aiflowin` |
 | Other agents | Agents that support the [Agent Plugins](https://agent-plugins.org) standard can load `agent-plugin/`. For any other agent, use the script below. |
 
 To set up every agent on the machine without plugins, run the script instead:

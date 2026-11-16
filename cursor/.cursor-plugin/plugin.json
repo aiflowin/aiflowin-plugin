@@ -15,6 +15,7 @@
     "mcp"
   ],
   "license": "MIT",
+  "repository": "https://github.com/aiflowin/aiflowin-plugin",
   "category": "developer-tools",
   "hooks": "./hooks/hooks.json"
 }
