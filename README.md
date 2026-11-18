@@ -24,18 +24,18 @@ Requires `python3` and `git` on the machine.
 | GitHub Copilot CLI | `copilot plugin marketplace add aiflowin/aiflowin-plugin`<br>`copilot plugin install aiflowin@aiflowin` |
 | Other agents | Agents that support the [Agent Plugins](https://agent-plugins.org) standard can load `agent-plugin/`. For any other agent, use the script below. |
 
-To set up every agent on the machine without plugins, run the script instead:
+To set up your coding agent without a plugin, run the single installer:
 
 ```bash
 curl -fsSL https://api.aiflowin.com/setup.sh | sh
 ```
 
-It registers the MCP server (`https://mcp.aiflowin.com/mcp`) and installs errlog's hooks in the user settings of Claude Code, Codex, Gemini CLI and Cursor. Use either the plugin or the script for each agent, not both, or every hook runs twice.
+It registers the MCP server (`https://mcp.aiflowin.com/mcp`) and installs errlog's hooks in the user settings of Claude Code, Codex, Gemini CLI and Cursor. Use `--agents codex` (or `claude`, `gemini`, `cursor`) to target one client. The same `setup.sh` also accepts the one-time code from `setup_errlog` after sign-in. The installer detects supported AiFlowin plugins and avoids adding duplicate hooks. For an agent-driven setup, paste: `Install AiFlowin for this coding agent. Read https://aiflowin.com/install.md and follow every step.`
 
 ## First session
 
 1. The agent asks you to sign in to AiFlowin. That is the MCP server's OAuth flow.
-2. errlog tells the agent it isn't connected yet. The agent calls the `setup_errlog` tool once and runs `errlog.py connect` with the one-time code it gets.
+2. errlog tells the agent it isn't connected yet. The agent calls the `setup_errlog` tool once and connects `errlog.py` with its one-time code. The tool's returned command also works when a client does not already have the installer.
 3. From then on the agent does nothing for errlog. The credential is in `~/.aiflowin/credentials`, and logs for each project are under `~/.aiflowin/projects/`.
 
 Who can see what you publish is a workspace setting, `issue_visibility`: `public` (default) or `private`.

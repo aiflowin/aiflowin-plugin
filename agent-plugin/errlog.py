@@ -52,7 +52,7 @@ import urllib.request
 from contextlib import contextmanager
 from pathlib import Path
 
-VERSION = "0.4.0"
+VERSION = "0.4.3"
 AIFLOWIN_HOME = Path(os.environ.get("AIFLOWIN_HOME") or Path.home() / ".aiflowin")
 CREDENTIALS = AIFLOWIN_HOME / "credentials"
 OUTBOX = AIFLOWIN_HOME / "outbox.jsonl"
@@ -227,10 +227,13 @@ def command_key(cmd: str, cfg: dict | None = None) -> str:
 
 
 MASKED_RE = re.compile(r";\s*echo\b|\|\|\s*(true|:)|\|\s*(tail|head|grep|tee|less|cat)\b|;\s*exit\s+0")
+# Pruebas fuertes de que el comando falló. Una línea «XError: …» suelta no lo es: también sale al
+# mostrar datos o logs. Python la acompaña de su Traceback y Node de las líneas «at …» de su pila.
 HARD_FAIL_RE = re.compile(
-    r"Traceback \(most recent call last\)|^\s*[\w.]*(Error|Exception): |npm ERR!|error TS\d+|error\[E\d+\]|"
+    r"Traceback \(most recent call last\)|npm ERR!|error TS\d+|error\[E\d+\]|"
+    r"^\s+at .+[(\s][^\s()]+:\d+:\d+\)?$|"
     r"panicked at|^FAILED\b|\b[1-9]\d* (failed|errors?)\b|Segmentation fault|command not found|"
-    r"^\s*(E\s+)?AssertionError", re.M)
+    r"^\s*E\s+AssertionError", re.M)
 
 
 def effective_exit_code(cmd: str, code, output: str):
@@ -779,11 +782,11 @@ def connect_hint(store: Store) -> str | None:
     AIFLOWIN_HOME.mkdir(parents=True, exist_ok=True)
     stamp.touch()
     script = Path(__file__).resolve()
-    return ("AiFlowin errlog está instalado pero sin conectar en esta máquina. Si tienes el servidor MCP de "
-            "AiFlowin, conéctalo una vez: llama a su herramienta `setup_errlog` y ejecuta "
+    return ("AiFlowin errlog está instalado pero sin conectar en esta máquina. Llama primero a `whoami` "
+            "del MCP de AiFlowin. Solo si `access` es `full` e `issues_enabled` es `true`, llama a "
+            "su herramienta `setup_errlog` y ejecuta "
             f'`python3 "{script}" connect --api <api_url> --code <code>` con los valores `api_url` y `code` '
-            "que devuelve. Después sigue con lo que estabas haciendo. Si no tienes ese MCP o el usuario no "
-            "quiere, ignora este aviso.")
+            "que devuelve. En otro caso, sigue trabajando sin conectar errlog.")
 
 
 def credentials() -> dict:
@@ -1457,6 +1460,23 @@ def exchange_code(api_url: str, code: str) -> dict:
             "agent": result.get("agent"), "workspace": result.get("workspace"), "created_at": now()}
 
 
+def plugin_errlog(agent: str) -> Path | None:
+    """errlog del plugin de AiFlowin, si está instalado para ese agente: sus hooks ya están puestos."""
+    home = Path.home()
+    patterns = {
+        "claude": [(home / ".claude" / "plugins", "cache/*/aiflowin/*/errlog.py")],
+        "codex": [(codex_home() / "plugins", "cache/*/aiflowin/*/errlog.py")],
+        "gemini": [(home / ".gemini" / "extensions", "aiflowin/errlog.py")],
+        "cursor": [(home / ".cursor" / "plugins", "local/aiflowin/errlog.py"),
+                   (home / ".cursor" / "plugins", "cache/*/aiflowin/*/errlog.py")],
+    }
+    for base, pattern in patterns.get(agent, []):
+        found = sorted(base.glob(pattern)) if base.is_dir() else []
+        if found:
+            return found[-1]
+    return None
+
+
 def cmd_install_global(a) -> int:
     """Instalación para el usuario: un script, una credencial y los hooks de cada agente. Ningún repo cambia."""
     home = Path.home()
@@ -1491,6 +1511,10 @@ def cmd_install_global(a) -> int:
     cfg_path.write_text(json.dumps(cfg, indent=2) + "\n")
     print(f"✓ errlog {VERSION} en {target}")
     for ag in agents:
+        if plugin_errlog(ag):
+            # El plugin ya trae el MCP y los hooks: otra copia haría que cada hook corriera dos veces.
+            print(f"✓ {ag}: plugin de AiFlowin ya instalado; usa esta conexión, sin añadir hooks")
+            continue
         line = install_agent(ag, home, global_command(ag))
         if a.mcp_url:
             line += " · " + register_mcp(ag, a.mcp_url)
@@ -1499,7 +1523,10 @@ def cmd_install_global(a) -> int:
         print("! No encontré ningún agente (~/.claude, ~/.codex, ~/.gemini, ~/.cursor). Usa --agents.")
     if "codex" in agents:
         print("! Codex: abre /hooks y confía en el hook de errlog (Codex no ejecuta hooks nuevos hasta entonces).")
-    print("Listo. Los errores de tus agentes se buscan y se comparten en AiFlowin sin gastar sus tokens.")
+    if CREDENTIALS.exists():
+        print("Listo. errlog está conectado a AiFlowin.")
+    else:
+        print("MCP y hooks instalados. Inicia sesión en AiFlowin; errlog se conectará cuando tengas acceso.")
     return 0
 
 
